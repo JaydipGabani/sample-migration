@@ -12,7 +12,7 @@ Sock-shop application migration from 3.11 to 4.10 using ansible
 
 ## Mig-controller config variables
 
-A number of parameters need to be set with the correct environment in order to create the CRs for migration purposes. A [sample](https://github.com/konveyor/mig-e2e/config/mig_controller.yml.example) file is supplied, make a copy of this file `config/mig_controller.yml`, **please make changes as necessary**.
+A number of parameters need to be set with the correct environment in order to create the CRs for migration purposes. A [sample](config/mig_controller.yml.example) file is supplied, make a copy of this file `config/mig_controller.yml`, **please make changes as necessary**.
 
 See below for a decription of these paremeters :
 
@@ -26,6 +26,14 @@ See below for a decription of these paremeters :
 | `mig_controller_aws_bucket_region` | Region of S3 bucket to be used for temporary Migration storage |
 | `mig_controller_remote_cluster_exposed_registry_path` | Exposed registry path in remote cluster for direct image migration |
 
+To make sure the secrets are encrypted use ansible vault to encrypt `config/mig_controller.yml` by running following -
+
+```bash
+$ ansible-vault encrypt config/mig_controller.yml
+```
+
+Running this command will ask for a password, enter a password in cli prompt. This password will later be used to run ansible playbooks. The more on how to use ansible-vault [here](https://www.redhat.com/sysadmin/introduction-ansible-vault).
+
 ## Other considerations
 
 * You must active sessions on the source and destination clusters before attempting to run any tests
@@ -33,17 +41,21 @@ See below for a decription of these paremeters :
 
 ## Running mig-controller sample tests
 
-On the **source** cluster, deploy **all** sample tests
+On the **source** cluster, deploy the application
 
 ```bash
-$ ansible-playbook e2e_mig_sample.yml -e "with_migrate=false"
+$ ansible-playbook e2e_mig_sample.yml -e "with_migrate=false" --ask-vault-pass
 ```
 
-On the **destination** cluster (mig-controller host) , migrate **all** sample tests
+The above command will ask for a password to be entered in cli which was entered while creating ansible-vault secret
+
+On the **destination** cluster (mig-controller host) , migrate the application
 
 ```bash
-$ ansible-playbook e2e_mig_sample.yml -e "with_deploy=false"
+$ ansible-playbook e2e_mig_sample.yml -e "with_deploy=false" --ask-vault-pass
 ```
+
+The above command will ask for a password to be entered in cli which was entered while creating ansible-vault secret
 
 The migrations will be tracked to completion, you can also check the status of each _phase of the migration_ using : 
 
