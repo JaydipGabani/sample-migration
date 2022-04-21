@@ -1,0 +1,8 @@
+# default common variables for mig-e2e roles/plays
+
+migration_namespace: openshift-migration
+migcluster_source_name: migcluster-remote-mod
+migcluster_target_name: migcluster-local-mod
+migstorage_name: migstorage-sample-mod
+
+oc_binary: "oc"

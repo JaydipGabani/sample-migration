@@ -1,0 +1,21 @@
+---
+- name: Cleanup resources
+  include_role:
+    name: migration_cleanup
+  when: with_cleanup|bool
+
+- name: Create resources
+  import_tasks: deploy.yml
+  when: with_deploy|bool
+
+- name: Start migration
+  import_tasks: migrate.yml
+  when: with_migrate|bool
+
+- name: Track migration
+  import_tasks: track.yml
+  when: with_migrate|bool
+
+- name: Validate migration
+  import_tasks: validate.yml
+  when: with_validate|bool

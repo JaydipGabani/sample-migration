@@ -1,0 +1,27 @@
+apiVersion: migration.openshift.io/v1alpha1
+kind: MigPlan
+metadata:
+  annotations:
+    migration.openshift.io/selected-migplan-type: full
+  name: {{ migration_plan_name }}
+  namespace: {{ migration_namespace }}
+spec:
+
+  srcMigClusterRef:
+    name: {{ migcluster_source_name }}
+    namespace: {{ migration_namespace }}
+
+  destMigClusterRef:
+    name: {{ migcluster_target_name }}
+    namespace: {{ migration_namespace }}
+
+  migStorageRef:
+    name: {{ migstorage_name }}
+    namespace: {{ migration_namespace }}
+
+  # [!] Change namespaces to adjust which OpenShift namespaces should be migrated from source to destination cluster
+{% if namespace is string %}
+  namespaces: [ {{ namespace }} ]
+{% else %}
+  namespaces: {{ namespace | to_yaml }}
+{% endif %}

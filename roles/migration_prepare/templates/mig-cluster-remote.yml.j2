@@ -1,0 +1,18 @@
+apiVersion: migration.openshift.io/v1alpha1
+kind: MigCluster
+metadata:
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: {{ migcluster_source_name }}
+  namespace: {{ migration_namespace }}
+spec:
+  # [!] Change isHostCluster to 'true' if you'll be running the controller on this cluster.
+  #     Setting 'isHostCluster' to true will bypass using the clusterRef and serviceAccountSecretRef below.
+  isHostCluster: false
+  insecure: true
+  exposedRegistryPath: {{ mig_controller_remote_cluster_exposed_registry_path }}
+  serviceAccountSecretRef:
+    name: sa-token-{{ migcluster_source_name }}
+    namespace: {{ migration_namespace }}
+
+  url: {{ mig_controller_remote_cluster_url }}

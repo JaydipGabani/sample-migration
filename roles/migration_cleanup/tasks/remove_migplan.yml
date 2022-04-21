@@ -1,0 +1,30 @@
+# k8s field_selectors cannot be used for CRs, API only supports core resources
+- name: Check existing migplans for {{ migration_sample_name }}
+  k8s_facts:
+    api_version: v1alpha1
+    kind: MigPlan
+    namespace: "{{ migration_namespace }}"
+  register: all_migplans
+
+- block:
+
+  - name: Extract discovered migplans for {{ migration_sample_name }}
+    set_fact:
+      migplans_to_remove: "{{ all_migplans | json_query('resources[].metadata.name') | select('match', migration_sample_name) | list }}"
+
+  - debug:
+      msg: 
+        - "These existing migplans will be removed :"
+        - "{{ migplans_to_remove }}"
+
+  - name: Remove existing migplans for {{ migration_sample_name }}
+    k8s:
+      state: absent
+      api_version: v1alpha1
+      kind: MigPlan
+      namespace: "{{ migration_namespace }}"
+      name: "{{ item }}"
+      wait: yes
+    loop: "{{ migplans_to_remove }}"
+
+  when: "migration_sample_name in (all_migplans | json_query('resources[].metadata.name') | string )"

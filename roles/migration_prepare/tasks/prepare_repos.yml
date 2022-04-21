@@ -1,0 +1,13 @@
+- set_fact:
+    repo_name: "{{ (repo_url | basename).split('.')[0] }}"
+
+- name: Check if {{ repo_name }} exists
+  stat:
+    path: "{{ playbook_dir }}/{{ repo_name }}"
+  register: repo_dir
+
+- name: Clone the {{ repo_name }} repo
+  git:
+    repo: "{{ repo_url }}"
+    dest: "{{ playbook_dir }}/{{ repo_name }}"
+  when: not repo_dir.stat.exists

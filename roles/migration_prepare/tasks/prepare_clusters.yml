@@ -1,0 +1,29 @@
+- name: Include required vars
+  include_vars:
+    file: "{{ playbook_dir }}/config/mig_controller.yml"
+
+# Source migration cluster does not need credentials isHostCluster: true
+- name: Create source migration cluster definition
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'mig-cluster-local.yml.j2')}}"
+
+- name: Create SA token on destination cluster
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'sa-secret-remote.yml.j2') }}"
+
+- name: Create remote migration cluster definition
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'mig-cluster-remote.yml.j2') }}"
+
+- name: Create migration storage creds
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'mig-storage-creds.yml.j2') }}"
+
+- name: Create migration storage
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'mig-storage.yml.j2') }}"

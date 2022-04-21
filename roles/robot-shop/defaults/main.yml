@@ -1,0 +1,17 @@
+---
+migration_sample_name: robot-shop
+migration_plan_name: "{{ migration_sample_name }}-migplan-{{ ansible_date_time.epoch }}"
+migration_name: "{{ migration_sample_name}}-mig-{{ ansible_date_time.epoch }}"
+migration_sample_files: "{{ playbook_dir }}/mig-demo-apps/apps/{{ migration_sample_name }}"
+pv: true
+pv_action: move
+pv_copy_method: filesystem
+quiesce: true
+stage: false
+src_storage_class: ""
+dst_storage_class: gp2
+with_deploy: true
+with_migrate: true
+with_cleanup: true
+with_validate: true
+namespace: robot-shop

@@ -1,0 +1,10 @@
+- name: Prepare e2e tests repo
+  include_tasks: prepare_repos.yml
+  loop: "{{ migration_sample_repos }}"
+  loop_control:
+    loop_var: repo_url
+
+- name: Prepare clusters for migration
+  import_tasks: prepare_clusters.yml
+  when: with_migrate|bool
+  tags: ["always", "prepare_cluster"]

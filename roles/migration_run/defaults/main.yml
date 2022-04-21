@@ -1,0 +1,4 @@
+---
+mig_velero_timeout: 10
+# If true, we will wait for a warning to be displayed before running the migration plan.
+wait_for_warnings: false

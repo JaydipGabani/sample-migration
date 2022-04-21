@@ -1,0 +1,9 @@
+- hosts: localhost
+  tasks:
+    - name: "Prepare clusters for migration"
+      include_role:
+        name: migration_prepare
+        tasks_from: prepare_clusters.yml
+  vars_files:
+    - "{{ playbook_dir }}/config/mig_controller.yml"
+    - "{{ playbook_dir }}/config/defaults.yml"

@@ -1,0 +1,7 @@
+mig_controller_remote_cluster_exposed_registry_path: <exposed registry path> #docker-registry-default.apps.gabani-311.mg.dog8code.com
+mig_controller_remote_cluster_url: https://api.ocp4-dev.mg.dog8code.com:6443
+mig_controller_aws_access_key: <Base64 encoded AWS access key>
+mig_controller_aws_secret_key: <Base64 encoded AWS secret key>
+mig_controller_aws_bucket_name: velero-903889c1a2xxxxxxxx
+mig_controller_aws_bucket_region: us-east-1
+mig_controller_sa_token: <Base64 encoded SA token for remote cluster>
